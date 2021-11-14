@@ -7,6 +7,7 @@ module.exports = {
   plugins: ['@typescript-eslint/eslint-plugin'],
   extends: [
     'plugin:@typescript-eslint/recommended',
+    'plugin:node/recommended',
     'plugin:prettier/recommended',
   ],
   root: true,
@@ -20,5 +21,12 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    'node/no-unsupported-features/es-syntax': 'off',
+    'node/no-unpublished-import': 'off',
+  },
+  settings: {
+    node: {
+      tryExtensions: ['.js', '.json', '.node', '.ts', '.d.ts'],
+    },
   },
 };
