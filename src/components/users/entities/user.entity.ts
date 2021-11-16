@@ -37,4 +37,7 @@ export class User {
   @Field({ description: 'User creation timestamp' })
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
+
+  @Exclude()
+  session?: string;
 }
