@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { ParseUUIDPipe } from '@nestjs/common';
 
 import { UsersService } from './users.service';
@@ -24,18 +24,20 @@ export class UsersResolver {
     return await this.usersService.findOne(id);
   }
 
-  @Mutation(() => User)
-  createUser(@Args('CreateUserDto') createUserDto: CreateUserDto) {
+  @Mutation(() => User, { description: 'Create new user', nullable: true })
+  createUser(
+    @Args('CreateUserDto') createUserDto: CreateUserDto,
+  ): Promise<User> {
     return this.usersService.create(createUserDto);
   }
 
   @Mutation(() => User)
-  updateUser(@Args('UpdateUserDto') updateUserDto: UpdateUserDto) {
-    return this.usersService.update(1, updateUserDto);
+  updateUser(@Args('UpdateUserDto') updateUserDto: UpdateUserDto, id: string) {
+    return this.usersService.update(id, updateUserDto);
   }
 
   @Mutation(() => User)
-  removeUser(@Args('id', { type: () => Int }) id: number) {
+  removeUser(@Args('id') id: string) {
     return this.usersService.remove(id);
   }
 }
