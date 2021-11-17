@@ -1,5 +1,7 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
+import { USER_ROLE, USER_STATUS } from '../components/users/user.types';
+
 const TABLE_NAME = 'user';
 
 export class user1636901042155 implements MigrationInterface {
@@ -19,6 +21,7 @@ export class user1636901042155 implements MigrationInterface {
             name: 'username',
             type: 'varchar',
             length: '32',
+            isUnique: true,
           },
           {
             name: 'password',
@@ -29,16 +32,18 @@ export class user1636901042155 implements MigrationInterface {
             name: 'email',
             type: 'varchar',
             length: '120',
+            isUnique: true,
           },
           {
             name: 'status',
             type: 'varchar',
             length: '120',
+            default: USER_STATUS.ACTIVE,
           },
           {
             name: 'role',
             type: 'int2',
-            default: 0,
+            default: USER_ROLE.USER,
           },
           {
             name: 'createdAt',
