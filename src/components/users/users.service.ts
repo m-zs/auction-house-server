@@ -29,8 +29,15 @@ export class UsersService {
     });
   }
 
-  update(id: string, _UpdateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+    const { password } = updateUserDto;
+
+    return this.userRepository.updateUser(id, {
+      ...updateUserDto,
+      ...(password && {
+        password: await this.hashPassword(password),
+      }),
+    });
   }
 
   remove(id: string) {

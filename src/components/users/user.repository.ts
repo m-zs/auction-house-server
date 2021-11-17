@@ -21,13 +21,13 @@ export class UserRepository extends Repository<User> {
   async createUser(createUserDto: CreateUserDto): Promise<User> {
     const user = this.create(createUserDto);
 
-    await this.save(user);
-
-    return user;
+    return await this.save(user);
   }
 
-  async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<void> {
+  async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     await this.update({ id }, updateUserDto);
+
+    return await this.findOne({ id });
   }
 
   async removeUser(id: string): Promise<void> {

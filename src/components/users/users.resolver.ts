@@ -25,15 +25,21 @@ export class UsersResolver {
   }
 
   @Mutation(() => User, { description: 'Create new user', nullable: true })
-  createUser(
+  async createUser(
     @Args('CreateUserDto') createUserDto: CreateUserDto,
   ): Promise<User> {
-    return this.usersService.create(createUserDto);
+    return await this.usersService.create(createUserDto);
   }
 
-  @Mutation(() => User)
-  updateUser(@Args('UpdateUserDto') updateUserDto: UpdateUserDto, id: string) {
-    return this.usersService.update(id, updateUserDto);
+  @Mutation(() => User, {
+    description: 'Update existing user',
+    nullable: true,
+  })
+  async updateUser(
+    @Args('UpdateUserDto') updateUserDto: UpdateUserDto,
+    id: string,
+  ): Promise<User> {
+    return await this.usersService.update(id, updateUserDto);
   }
 
   @Mutation(() => User)
