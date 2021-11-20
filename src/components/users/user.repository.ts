@@ -19,7 +19,7 @@ export class UserRepository extends Repository<User> {
     return await this.findOne({ username });
   }
 
-  async createUser(createUserDto: CreateUserDto): Promise<User> {
+  async createUser(createUserDto: CreateUserDto): Promise<User | void> {
     const user = this.create(createUserDto);
 
     return await this.save(user);

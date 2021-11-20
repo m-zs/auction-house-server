@@ -27,7 +27,7 @@ export class UsersResolver {
   @Mutation(() => User, { description: 'Create new user', nullable: true })
   async createUser(
     @Args('CreateUserDto') createUserDto: CreateUserDto,
-  ): Promise<User> {
+  ): Promise<User | void> {
     return await this.usersService.create(createUserDto);
   }
 

@@ -22,7 +22,7 @@ export class UsersService {
     return this.userRepository.findOne(id);
   }
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto): Promise<User | void> {
     return this.userRepository.createUser({
       ...createUserDto,
       password: await this.hashPassword(createUserDto.password),
