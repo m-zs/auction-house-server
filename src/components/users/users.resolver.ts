@@ -38,12 +38,17 @@ export class UsersResolver {
   async updateUser(
     @Args('UpdateUserDto') updateUserDto: UpdateUserDto,
     id: string,
-  ): Promise<User> {
+  ): Promise<User | void> {
     return await this.usersService.update(id, updateUserDto);
   }
 
-  @Mutation(() => User)
-  removeUser(@Args('id') id: string) {
-    return this.usersService.remove(id);
+  @Mutation(() => User, {
+    description: 'Remove existing user',
+    nullable: true,
+  })
+  async removeUser(
+    @Args('id', ParseUUIDPipe) id: string,
+  ): Promise<User | void> {
+    return await this.usersService.remove(id);
   }
 }

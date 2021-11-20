@@ -29,7 +29,7 @@ export class UsersService {
     });
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User | void> {
     const { password } = updateUserDto;
 
     return this.userRepository.updateUser(id, {
@@ -40,8 +40,8 @@ export class UsersService {
     });
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} user`;
+  async remove(id: string): Promise<User | void> {
+    return this.userRepository.removeUser(id);
   }
 
   async hashPassword(password: string): Promise<string> {

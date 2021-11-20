@@ -3,6 +3,7 @@ import { EntityRepository, Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { NotFoundException } from '@nestjs/common';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
@@ -24,17 +25,30 @@ export class UserRepository extends Repository<User> {
     return await this.save(user);
   }
 
-  async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+  async updateUser(
+    id: string,
+    updateUserDto: UpdateUserDto,
+  ): Promise<User | void> {
+    const user = await this.findOne({ id });
+
+    if (!user) {
+      throw new NotFoundException(`User with id: ${id} not found`);
+    }
+
     await this.update({ id }, updateUserDto);
 
-    return await this.findOne({ id });
+    return user;
   }
 
-  async removeUser(id: string): Promise<void> {
-    await this.delete(id);
-  }
+  async removeUser(id: string): Promise<User | void> {
+    const user = await this.findOne({ id });
 
-  async updateSession(id: string, session?: string): Promise<void> {
-    await this.update({ id }, { session });
+    if (!user) {
+      throw new NotFoundException(`User with id: ${id} not found`);
+    }
+
+    await this.delete({ id });
+
+    return user;
   }
 }
