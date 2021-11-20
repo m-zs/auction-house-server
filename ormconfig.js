@@ -5,7 +5,10 @@ module.exports = {
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DATABASE,
-  migrations: ['src/migrations/*.ts'],
+  entities: ['dist/components/**/*.entity.js'],
+  migrations: ['dist/migrations/*.js'],
+  seeds: ['dist/seeds/**/*.js'],
+  factories: ['dist/factories/**/*.js'],
   logging: true,
   ...(process.env === 'development'
     ? {
