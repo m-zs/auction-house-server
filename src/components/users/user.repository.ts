@@ -51,4 +51,11 @@ export class UserRepository extends Repository<User> {
 
     return user;
   }
+
+  async updateSession(id: string, session: string): Promise<boolean> {
+    const { affected } = await this.update({ id }, { session });
+    console.log(affected);
+
+    return !!affected;
+  }
 }

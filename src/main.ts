@@ -7,6 +7,7 @@ import { TransformInterceptor } from './interceptors/transform.interceptor';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.enableCors({ origin: true, credentials: true });
   app.useGlobalInterceptors(new PsqlErrorInterceptor());
   app.useGlobalInterceptors(new TransformInterceptor());
 
