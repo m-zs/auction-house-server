@@ -25,6 +25,7 @@ module.exports = {
     'node/no-unpublished-import': 'off',
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     'node/no-missing-import': 'off',
+    'node/no-extraneous-import': 'off',
   },
   settings: {
     node: {
