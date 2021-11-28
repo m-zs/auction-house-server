@@ -1,10 +1,12 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import { ParseUUIDPipe } from '@nestjs/common';
+import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
 
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { JwtGuard } from '../auth/guards/jwt.guard';
+import { CtxUser } from '../auth/decorators/get-user.decorator';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -35,20 +37,20 @@ export class UsersResolver {
     description: 'Update existing user',
     nullable: true,
   })
+  @UseGuards(JwtGuard)
   async updateUser(
     @Args('UpdateUserDto') updateUserDto: UpdateUserDto,
-    id: string,
+    @CtxUser() ctxUser: User,
   ): Promise<User | void> {
-    return await this.usersService.update(id, updateUserDto);
+    return await this.usersService.update(ctxUser.id, updateUserDto);
   }
 
   @Mutation(() => User, {
     description: 'Remove existing user',
     nullable: true,
   })
-  async removeUser(
-    @Args('id', ParseUUIDPipe) id: string,
-  ): Promise<User | void> {
-    return await this.usersService.remove(id);
+  @UseGuards(JwtGuard)
+  async removeUser(@CtxUser() ctxUser: User): Promise<User | void> {
+    return await this.usersService.remove(ctxUser.id);
   }
 }
