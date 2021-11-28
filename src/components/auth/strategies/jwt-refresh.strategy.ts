@@ -5,10 +5,10 @@ import { ConfigService } from '@nestjs/config';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Request } from 'express';
 
-import { UserRepository } from 'src/components/users/user.repository';
+import { UserRepository } from 'components/users/user.repository';
+import { User } from 'components/users/entities/user.entity';
 import { COOKIE_NAME } from '../auth.const';
 import { JWTPayload } from '../dto/jwt-payload.dto';
-import { User } from 'src/components/users/entities/user.entity';
 
 @Injectable()
 export class JwtRefreshStrategy extends PassportStrategy(

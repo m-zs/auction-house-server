@@ -1,13 +1,13 @@
 import { UseGuards } from '@nestjs/common';
 import { Resolver, Mutation, Args, Context } from '@nestjs/graphql';
 
+import { GlobalContext } from 'types/context';
+import { User } from 'components/users/entities/user.entity';
 import { AuthService } from './auth.service';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { TokenPayload } from './dto/token-payload.dto';
 import { COOKIE_NAME } from './auth.const';
-import { GlobalContext } from 'src/types/context';
 import { CtxUser } from './decorators/get-user.decorator';
-import { User } from '../users/entities/user.entity';
 import { JwtGuard } from './guards/jwt.guard';
 import { RefreshGuard } from './guards/jwt-refresh.guard';
 

@@ -8,7 +8,7 @@ import { AuthService } from './auth.service';
 import { AuthResolver } from './auth.resolver';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
-import { UserRepository } from 'src/components/users/user.repository';
+import { UserRepository } from 'components/users/user.repository';
 
 @Module({
   imports: [
