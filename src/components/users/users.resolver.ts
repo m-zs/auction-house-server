@@ -1,12 +1,12 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
 
+import { JwtGuard } from 'components/auth/guards/jwt.guard';
+import { CtxUser } from 'components/auth/decorators/get-user.decorator';
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { JwtGuard } from '../auth/guards/jwt.guard';
-import { CtxUser } from '../auth/decorators/get-user.decorator';
 
 @Resolver(() => User)
 export class UsersResolver {

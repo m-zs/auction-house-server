@@ -6,7 +6,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @EntityRepository(User)
-export class UserRepository extends Repository<User> {
+export class UsersRepository extends Repository<User> {
   async findUsers(): Promise<User[]> {
     return await this.find();
   }
