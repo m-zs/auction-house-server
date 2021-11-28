@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import * as bcrypt from 'bcrypt';
 
+import { HashService } from 'src/utils/hash/hash.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -11,7 +10,7 @@ import { UserRepository } from './user.repository';
 export class UsersService {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly configService: ConfigService,
+    private readonly hashService: HashService,
   ) {}
 
   async findAll(): Promise<User[]> {
@@ -25,7 +24,7 @@ export class UsersService {
   async create(createUserDto: CreateUserDto): Promise<User | void> {
     return this.userRepository.createUser({
       ...createUserDto,
-      password: await this.hashPassword(createUserDto.password),
+      password: await this.hashService.hash(createUserDto.password),
     });
   }
 
@@ -35,19 +34,12 @@ export class UsersService {
     return this.userRepository.updateUser(id, {
       ...updateUserDto,
       ...(password && {
-        password: await this.hashPassword(password),
+        password: await this.hashService.hash(password),
       }),
     });
   }
 
   async remove(id: string): Promise<User | void> {
     return this.userRepository.removeUser(id);
-  }
-
-  async hashPassword(password: string): Promise<string> {
-    return await bcrypt.hash(
-      password,
-      Number(this.configService.get('SALT_ROUNDS')),
-    );
   }
 }
