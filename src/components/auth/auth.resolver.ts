@@ -9,6 +9,7 @@ import { GlobalContext } from 'src/types/context';
 import { CtxUser } from './decorators/get-user.decorator';
 import { User } from '../users/entities/user.entity';
 import { JwtGuard } from './guards/jwt.guard';
+import { RefreshGuard } from './guards/jwt-refresh.guard';
 
 @Resolver()
 export class AuthResolver {
@@ -42,7 +43,7 @@ export class AuthResolver {
   }
 
   @Mutation(() => TokenPayload)
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RefreshGuard)
   refresh(@CtxUser() ctxUser: User): TokenPayload {
     return this.authService.refresh(ctxUser);
   }
