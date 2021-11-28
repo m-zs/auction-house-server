@@ -9,20 +9,20 @@ import { UsersRepository } from './users.repository';
 @Injectable()
 export class UsersService {
   constructor(
-    private readonly userRepository: UsersRepository,
+    private readonly usersRepository: UsersRepository,
     private readonly hashService: HashService,
   ) {}
 
   async findAll(): Promise<User[]> {
-    return this.userRepository.findUsers();
+    return this.usersRepository.findUsers();
   }
 
   async findOne(id: string) {
-    return this.userRepository.findOne(id);
+    return this.usersRepository.findOne(id);
   }
 
   async create(createUserDto: CreateUserDto): Promise<User | void> {
-    return this.userRepository.createUser({
+    return this.usersRepository.createUser({
       ...createUserDto,
       password: await this.hashService.hash(createUserDto.password),
     });
@@ -31,7 +31,7 @@ export class UsersService {
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User | void> {
     const { password } = updateUserDto;
 
-    return this.userRepository.updateUser(id, {
+    return this.usersRepository.updateUser(id, {
       ...updateUserDto,
       ...(password && {
         password: await this.hashService.hash(password),
@@ -40,6 +40,6 @@ export class UsersService {
   }
 
   async remove(id: string): Promise<User | void> {
-    return this.userRepository.removeUser(id);
+    return this.usersRepository.removeUser(id);
   }
 }
