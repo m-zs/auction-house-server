@@ -1,11 +1,12 @@
 import { registerAs } from '@nestjs/config';
+import { join } from 'path';
 
 export default registerAs('database', () => {
   const configBase = {
     type: 'postgres',
     autoLoadEntities: true,
-    entities: ['src/**/*.entity.{ts,js}'],
-    migrations: ['src/**/*.migration.{ts,js}'],
+    entities: [join(__dirname, '..', '*.entity.{ts,js}')],
+    migrations: [join(__dirname, '..', 'migrations/*.{ts,js}')],
     seeds: ['src/seeds/*.{ts,js}'],
     factories: ['src/factories/*.{ts,js}'],
   };
@@ -28,7 +29,6 @@ export default registerAs('database', () => {
         username: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASSWORD,
         database: process.env.POSTGRES_DATABASE,
-        autoLoadEntities: true,
         logging: true,
       };
   }
