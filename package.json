@@ -18,10 +18,12 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage --passWithNoTests",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "test:e2e": "cross-env NODE_ENV=test npm run migration:run-test && jest --config ./jest-e2e.json",
     "prepare": "husky install",
     "seed:run": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed",
-    "migration:run": "typeorm migration:run"
+    "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
+    "migration:run": "npm run typeorm migration:run",
+    "migration:run-test": "cross-env NODE_ENV=test npm run typeorm migration:run"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
@@ -37,6 +39,7 @@
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "cookie-parser": "^1.4.6",
+    "cross-env": "^7.0.3",
     "faker": "^5.5.3",
     "graphql": "^15.7.2",
     "passport": "^0.5.0",
