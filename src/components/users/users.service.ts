@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 
 import { HashService } from 'utils/hash/hash.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -13,8 +14,8 @@ export class UsersService {
     private readonly hashService: HashService,
   ) {}
 
-  async findAll(): Promise<User[]> {
-    return this.usersRepository.findUsers();
+  async findAll(options: IPaginationOptions): Promise<Pagination<User>> {
+    return this.usersRepository.findUsers(options);
   }
 
   async findOne(id: string) {

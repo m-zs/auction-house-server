@@ -36,7 +36,7 @@ describe('UsersResolver', () => {
 
       usersService.findAll.mockResolvedValueOnce(serviceResponse);
 
-      const response = await usersResolver.findAll();
+      const response = await usersResolver.findAll({ limit: 1, page: 1 });
 
       expect(response).toBe(serviceResponse);
     });

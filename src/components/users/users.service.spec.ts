@@ -46,7 +46,7 @@ describe('UserService', () => {
 
       usersRepository.findUsers.mockResolvedValueOnce(repositoryResponse);
 
-      const result = await usersService.findAll();
+      const result = await usersService.findAll({ page: 1, limit: 1 });
 
       expect(result).toBe(repositoryResponse);
     });

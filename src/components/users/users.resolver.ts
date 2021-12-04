@@ -1,6 +1,9 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
+import { ParseUUIDPipe, UseGuards, UsePipes } from '@nestjs/common';
 
+import { PaginationArgs } from 'utils/arguments/pagination.argument';
+import { PaginationPipe } from 'pipes/pagination.pipe';
+import { FindAllResponse } from './responses/find-all.response';
 import { JwtGuard } from 'components/auth/guards/jwt.guard';
 import { CtxUser } from 'components/auth/decorators/get-user.decorator';
 import { UsersService } from './users.service';
@@ -12,9 +15,12 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
-  @Query(() => [User], { name: 'users', nullable: 'items' })
-  async findAll(): Promise<User[]> {
-    return await this.usersService.findAll();
+  @Query(() => FindAllResponse, { name: 'users' })
+  @UsePipes(new PaginationPipe())
+  async findAll(
+    @Args() { page, limit }: PaginationArgs,
+  ): Promise<FindAllResponse> {
+    return await this.usersService.findAll({ page, limit });
   }
 
   @Query(() => User, {
