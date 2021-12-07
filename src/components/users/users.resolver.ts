@@ -1,6 +1,12 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import { ParseUUIDPipe, UseGuards, UsePipes } from '@nestjs/common';
+import {
+  ParseUUIDPipe,
+  UseGuards,
+  UseInterceptors,
+  UsePipes,
+} from '@nestjs/common';
 
+import { PsqlErrorInterceptor } from 'interceptors/psql-error.interceptor';
 import { PaginationArgs } from 'utils/arguments/pagination.argument';
 import { PaginationPipe } from 'pipes/pagination.pipe';
 import { FindAllResponse } from './responses/find-all.response';
@@ -33,8 +39,9 @@ export class UsersResolver {
   }
 
   @Mutation(() => User, { description: 'Create new user', nullable: true })
+  @UseInterceptors(PsqlErrorInterceptor)
   async createUser(
-    @Args('CreateUserDto') createUserDto: CreateUserDto,
+    @Args('user') createUserDto: CreateUserDto,
   ): Promise<User | void> {
     return await this.usersService.create(createUserDto);
   }
@@ -45,7 +52,7 @@ export class UsersResolver {
   })
   @UseGuards(JwtGuard)
   async updateUser(
-    @Args('UpdateUserDto') updateUserDto: UpdateUserDto,
+    @Args('user') updateUserDto: UpdateUserDto,
     @CtxUser() ctxUser: User,
   ): Promise<User | void> {
     return await this.usersService.update(ctxUser.id, updateUserDto);
