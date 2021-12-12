@@ -22,8 +22,8 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column()
   @Exclude({ toPlainOnly: true })
+  @Column()
   password: string;
 
   @Field({ description: 'User status' })
@@ -38,6 +38,7 @@ export class User {
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
-  @Exclude()
+  @Exclude({ toPlainOnly: true })
+  @Column()
   session?: string;
 }

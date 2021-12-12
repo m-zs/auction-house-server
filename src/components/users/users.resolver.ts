@@ -1,6 +1,17 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import { ParseUUIDPipe } from '@nestjs/common';
+import {
+  ParseUUIDPipe,
+  UseGuards,
+  UseInterceptors,
+  UsePipes,
+} from '@nestjs/common';
 
+import { PsqlErrorInterceptor } from 'interceptors/psql-error.interceptor';
+import { PaginationArgs } from 'utils/arguments/pagination.argument';
+import { PaginationPipe } from 'pipes/pagination.pipe';
+import { FindAllResponse } from './responses/find-all.response';
+import { JwtGuard } from 'components/auth/guards/jwt.guard';
+import { CtxUser } from 'components/auth/decorators/get-user.decorator';
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -10,9 +21,12 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
-  @Query(() => [User], { name: 'users', nullable: 'items' })
-  async findAll(): Promise<User[]> {
-    return await this.usersService.findAll();
+  @Query(() => FindAllResponse, { name: 'users' })
+  @UsePipes(new PaginationPipe())
+  async findAll(
+    @Args() { page, limit }: PaginationArgs,
+  ): Promise<FindAllResponse> {
+    return await this.usersService.findAll({ page, limit });
   }
 
   @Query(() => User, {
@@ -25,8 +39,9 @@ export class UsersResolver {
   }
 
   @Mutation(() => User, { description: 'Create new user', nullable: true })
+  @UseInterceptors(PsqlErrorInterceptor)
   async createUser(
-    @Args('CreateUserDto') createUserDto: CreateUserDto,
+    @Args('user') createUserDto: CreateUserDto,
   ): Promise<User | void> {
     return await this.usersService.create(createUserDto);
   }
@@ -35,20 +50,20 @@ export class UsersResolver {
     description: 'Update existing user',
     nullable: true,
   })
+  @UseGuards(JwtGuard)
   async updateUser(
-    @Args('UpdateUserDto') updateUserDto: UpdateUserDto,
-    id: string,
+    @Args('user') updateUserDto: UpdateUserDto,
+    @CtxUser() ctxUser: User,
   ): Promise<User | void> {
-    return await this.usersService.update(id, updateUserDto);
+    return await this.usersService.update(ctxUser.id, updateUserDto);
   }
 
   @Mutation(() => User, {
     description: 'Remove existing user',
     nullable: true,
   })
-  async removeUser(
-    @Args('id', ParseUUIDPipe) id: string,
-  ): Promise<User | void> {
-    return await this.usersService.remove(id);
+  @UseGuards(JwtGuard)
+  async removeUser(@CtxUser() ctxUser: User): Promise<User | void> {
+    return await this.usersService.remove(ctxUser.id);
   }
 }

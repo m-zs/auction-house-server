@@ -1,14 +1,19 @@
+import { NotFoundException } from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
+import {
+  IPaginationOptions,
+  Pagination,
+  paginate,
+} from 'nestjs-typeorm-paginate';
 
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { NotFoundException } from '@nestjs/common';
 
 @EntityRepository(User)
-export class UserRepository extends Repository<User> {
-  async findUsers(): Promise<User[]> {
-    return await this.find();
+export class UsersRepository extends Repository<User> {
+  async findUsers(options: IPaginationOptions): Promise<Pagination<User>> {
+    return await this.paginate(options);
   }
 
   async findUser(id: string): Promise<User | void> {
@@ -50,5 +55,15 @@ export class UserRepository extends Repository<User> {
     await this.delete({ id });
 
     return user;
+  }
+
+  async updateSession(id: string, session: string): Promise<boolean> {
+    const { affected } = await this.update({ id }, { session });
+
+    return !!affected;
+  }
+
+  async paginate(options: IPaginationOptions): Promise<Pagination<User>> {
+    return paginate<User>(this, options);
   }
 }

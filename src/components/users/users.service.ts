@@ -1,53 +1,46 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import * as bcrypt from 'bcrypt';
+import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 
+import { HashService } from 'utils/hash/hash.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { UserRepository } from './user.repository';
+import { UsersRepository } from './users.repository';
 
 @Injectable()
 export class UsersService {
   constructor(
-    private readonly userRepository: UserRepository,
-    private readonly configService: ConfigService,
+    private readonly usersRepository: UsersRepository,
+    private readonly hashService: HashService,
   ) {}
 
-  async findAll(): Promise<User[]> {
-    return this.userRepository.findUsers();
+  async findAll(options: IPaginationOptions): Promise<Pagination<User>> {
+    return this.usersRepository.findUsers(options);
   }
 
   async findOne(id: string) {
-    return this.userRepository.findOne(id);
+    return this.usersRepository.findUser(id);
   }
 
   async create(createUserDto: CreateUserDto): Promise<User | void> {
-    return this.userRepository.createUser({
+    return this.usersRepository.createUser({
       ...createUserDto,
-      password: await this.hashPassword(createUserDto.password),
+      password: await this.hashService.hash(createUserDto.password),
     });
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User | void> {
     const { password } = updateUserDto;
 
-    return this.userRepository.updateUser(id, {
+    return this.usersRepository.updateUser(id, {
       ...updateUserDto,
       ...(password && {
-        password: await this.hashPassword(password),
+        password: await this.hashService.hash(password),
       }),
     });
   }
 
   async remove(id: string): Promise<User | void> {
-    return this.userRepository.removeUser(id);
-  }
-
-  async hashPassword(password: string): Promise<string> {
-    return await bcrypt.hash(
-      password,
-      Number(this.configService.get('SALT_ROUNDS')),
-    );
+    return this.usersRepository.removeUser(id);
   }
 }
