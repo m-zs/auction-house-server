@@ -4,6 +4,15 @@ import * as faker from 'faker';
 import { UsersResolver } from 'components/users/users.resolver';
 import { makeRequest } from './make-request';
 
+const buildCookiesObject = (cookies: string[]) =>
+  cookies.reduce((acc, curr) => {
+    const [name, value] = curr.split('=');
+
+    acc[name] = value;
+
+    return acc;
+  }, {});
+
 export const generateUser = () => ({
   username: faker.internet.userName(),
   email: faker.internet.email(),
@@ -27,9 +36,10 @@ export const createAuthUserWithToken = async (
         signIn: { token },
       },
     },
-  } = await makeRequest(
+    headers,
+  } = await makeRequest({
     app,
-    `
+    query: `
       mutation {
         signIn(credentials: {
           username: "${user.username}",
@@ -39,7 +49,12 @@ export const createAuthUserWithToken = async (
         }
       }
     `,
-  );
+  });
 
-  return { token, id: newUser.id, username: user.username };
+  return {
+    token,
+    id: newUser.id,
+    username: user.username,
+    cookies: buildCookiesObject(headers['set-cookie']),
+  };
 };

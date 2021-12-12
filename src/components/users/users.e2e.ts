@@ -41,9 +41,9 @@ describe('Users - e2e', () => {
     it('should return error if invalid pagination if requested', async () => {
       const {
         body: { errors },
-      } = await makeRequest(
+      } = await makeRequest({
         app,
-        `
+        query: `
           {
             users(limit: 999) {
               items {
@@ -52,7 +52,7 @@ describe('Users - e2e', () => {
             }
           }
         `,
-      );
+      });
 
       expect(errors[0].extensions.response.statusCode).toBe(400);
       expect(errors.length).toBe(1);
@@ -67,9 +67,9 @@ describe('Users - e2e', () => {
 
       const {
         body: { data },
-      } = await makeRequest(
+      } = await makeRequest({
         app,
-        `
+        query: `
           {
             users {
               items {
@@ -78,7 +78,7 @@ describe('Users - e2e', () => {
             }
           }
         `,
-      );
+      });
 
       expect(data.users.items.length).toBe(users.length);
     });
@@ -96,16 +96,16 @@ describe('Users - e2e', () => {
 
       const {
         body: { data },
-      } = await makeRequest(
+      } = await makeRequest({
         app,
-        `
+        query: `
           {
             user(id: "${id}") {
               id
             }
           }
         `,
-      );
+      });
 
       expect(data.user.id).toBe(id);
     });
@@ -114,9 +114,9 @@ describe('Users - e2e', () => {
   describe('createUser', () => {
     const { username, email, password } = generateUser();
     const createUserRequest = async () =>
-      await makeRequest(
+      await makeRequest({
         app,
-        `
+        query: `
           mutation {
             createUser(user: {
               username: "${username}",
@@ -128,7 +128,7 @@ describe('Users - e2e', () => {
             }
           }
         `,
-      );
+      });
 
     it('should create a new user', async () => {
       const {
@@ -153,9 +153,9 @@ describe('Users - e2e', () => {
     it('should return an error for request without a valid token', async () => {
       const {
         body: { errors, data },
-      } = await makeRequest(
+      } = await makeRequest({
         app,
-        `
+        query: `
           mutation {
             updateUser(user: {
               email: "${faker.internet.email()}"
@@ -164,7 +164,7 @@ describe('Users - e2e', () => {
             }
           }
         `,
-      );
+      });
 
       expect(errors.length).toBe(1);
       expect(errors[0].extensions.response.statusCode).toBe(401);
@@ -178,9 +178,9 @@ describe('Users - e2e', () => {
         body: {
           data: { updateUser },
         },
-      } = await makeRequest(
+      } = await makeRequest({
         app,
-        `
+        query: `
           mutation {
             updateUser(user: {
               email: "${faker.internet.email()}"
@@ -190,7 +190,7 @@ describe('Users - e2e', () => {
           }
         `,
         token,
-      );
+      });
 
       expect(updateUser.id).toBe(id);
     });
@@ -203,16 +203,16 @@ describe('Users - e2e', () => {
           errors,
           data: { removeUser },
         },
-      } = await makeRequest(
+      } = await makeRequest({
         app,
-        `
+        query: `
           mutation {
             removeUser {
               id
             }
           }
         `,
-      );
+      });
 
       expect(errors.length).toBe(1);
       expect(errors[0].extensions.response.statusCode).toBe(401);
@@ -227,9 +227,9 @@ describe('Users - e2e', () => {
       body: {
         data: { removeUser },
       },
-    } = await makeRequest(
+    } = await makeRequest({
       app,
-      `
+      query: `
         mutation {
           removeUser {
             id
@@ -237,22 +237,22 @@ describe('Users - e2e', () => {
         }
       `,
       token,
-    );
+    });
 
     const {
       body: {
         data: { user },
       },
-    } = await makeRequest(
+    } = await makeRequest({
       app,
-      `
+      query: `
         {
           user(id: "${id}") {
             id
           }
         }
       `,
-    );
+    });
 
     expect(user).toBe(null);
     expect(removeUser.id).toBe(id);
