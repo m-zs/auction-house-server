@@ -102,7 +102,7 @@ describe('', () => {
         `,
       });
 
-      expect(errors[0].extensions.response.statusCode).toBe(401);
+      expect(errors[0].statusCode).toBe(401);
       expect(errors.length).toBe(1);
     });
   });
@@ -120,7 +120,7 @@ describe('', () => {
         `,
       });
 
-      expect(errors[0].extensions.response.statusCode).toBe(401);
+      expect(errors[0].statusCode).toBe(401);
       expect(errors.length).toBe(1);
       expect(data).toBe(null);
     });
@@ -166,7 +166,7 @@ describe('', () => {
         token,
       });
 
-      expect(errors[0].extensions.response.statusCode).toBe(401);
+      expect(errors[0].statusCode).toBe(401);
       expect(errors.length).toBe(1);
       expect(data).toBe(null);
     });
@@ -188,7 +188,7 @@ describe('', () => {
         cookies: [`${COOKIE_NAME}=${cookies[COOKIE_NAME]}`],
       });
 
-      expect(errors[0].extensions.response.statusCode).toBe(401);
+      expect(errors[0].statusCode).toBe(401);
       expect(errors.length).toBe(1);
       expect(data).toBe(null);
     });

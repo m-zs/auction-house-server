@@ -54,7 +54,7 @@ describe('Users - e2e', () => {
         `,
       });
 
-      expect(errors[0].extensions.response.statusCode).toBe(400);
+      expect(errors[0].statusCode).toBe(400);
       expect(errors.length).toBe(1);
     });
 
@@ -144,7 +144,7 @@ describe('Users - e2e', () => {
       } = await createUserRequest();
 
       expect(errors.length).toBe(1);
-      expect(errors[0].extensions.response.statusCode).toBe(409);
+      expect(errors[0].statusCode).toBe(409);
       expect(data.createUser).toBe(null);
     });
   });
@@ -167,7 +167,7 @@ describe('Users - e2e', () => {
       });
 
       expect(errors.length).toBe(1);
-      expect(errors[0].extensions.response.statusCode).toBe(401);
+      expect(errors[0].statusCode).toBe(401);
       expect(data.updateUser).toBe(null);
     });
 
@@ -215,7 +215,7 @@ describe('Users - e2e', () => {
       });
 
       expect(errors.length).toBe(1);
-      expect(errors[0].extensions.response.statusCode).toBe(401);
+      expect(errors[0].statusCode).toBe(401);
       expect(removeUser).toBe(null);
     });
   });

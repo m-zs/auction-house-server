@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
+import { GraphQLError } from 'graphql';
 
 import dbConfiguration from './config/db.config';
 import { UsersModule } from './components/users/users.module';
@@ -25,6 +26,11 @@ import { AuthModule } from './components/auth/auth.module';
         credentials: true,
         origin: true,
       },
+      formatError: (error: GraphQLError) => ({
+        message: error?.extensions?.response?.message || error?.message,
+        statusCode: error?.extensions?.response?.statusCode,
+        code: error?.extensions?.code,
+      }),
     }),
     UsersModule,
     AuthModule,
