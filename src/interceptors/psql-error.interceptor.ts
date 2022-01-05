@@ -23,13 +23,11 @@ export class PsqlErrorInterceptor implements NestInterceptor {
 
         switch (error.code) {
           case DB_ERRORS.DUPLICATE:
-            throw new ConflictException(
-              `Value ${value} for ${name} already exists.`,
-            );
+            throw new ConflictException(`${name} ${value} already exists`);
 
           case DB_ERRORS.FOREIGN_MISSING:
             throw new BadRequestException(
-              `Invalid value ${value} for field ${name}.`,
+              `${name} field has been provided with invalid value: ${value}`,
             );
 
           default:
