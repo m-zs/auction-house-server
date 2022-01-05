@@ -15,9 +15,8 @@ import { AuthService } from './auth.service';
 import { AuthModule } from './auth.module';
 import { COOKIE_NAME } from './auth.const';
 
-describe('', () => {
+describe('Auth - e2e', () => {
   let app: INestApplication;
-
   let usersRepository: UsersRepository;
   let usersResolver: UsersResolver;
 
