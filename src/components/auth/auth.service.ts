@@ -22,7 +22,7 @@ export class AuthService {
     token: string;
     refreshToken: string;
   }> {
-    const { id, username, password, role, status } =
+    const { id, username, password, role, status, email } =
       (await this.userRepository.findUserByUsername(
         authCredentialsDto.username,
       )) || {};
@@ -38,7 +38,7 @@ export class AuthService {
     await this.userRepository.updateSession(id, refreshToken);
 
     return {
-      token: this.createAccessToken({ username, id, role, status }),
+      token: this.createAccessToken({ username, id, role, status, email }),
       refreshToken,
     };
   }
@@ -48,9 +48,11 @@ export class AuthService {
   }
 
   refresh(ctxUser: User): TokenPayload {
-    const { username, id, role, status } = ctxUser;
+    const { username, id, role, status, email } = ctxUser;
 
-    return { token: this.createAccessToken({ username, id, role, status }) };
+    return {
+      token: this.createAccessToken({ username, id, role, status, email }),
+    };
   }
 
   createRefreshToken(username: string, id: string): string {
@@ -69,17 +71,18 @@ export class AuthService {
     id,
     role,
     status,
+    email,
   }: {
     username: string;
     id: string;
     role: number;
     status: number;
+    email: string;
   }): string {
     return this.jwtService.sign(
-      { username, id, role, status },
+      { username, id, role, status, email },
       {
-        // todo: adjust after testing
-        expiresIn: '7d',
+        expiresIn: '30m',
         secret: this.configService.get('JWT_SECRET'),
       },
     );

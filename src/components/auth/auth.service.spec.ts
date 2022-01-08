@@ -18,6 +18,7 @@ describe('AuthService', () => {
     id: faker.datatype.uuid(),
     role: 'user',
     status: faker.datatype.number(),
+    email: faker.internet.email(),
   } as unknown as User;
   let authService: AuthService;
   let usersRepository: MockType<UsersRepository>;
@@ -54,6 +55,7 @@ describe('AuthService', () => {
         role: 'user',
         status: faker.datatype.number(),
         id: faker.datatype.uuid(),
+        email: faker.internet.email(),
       };
       const tokens = {
         refresh: 'refresh token',
@@ -84,12 +86,15 @@ describe('AuthService', () => {
         findUserByUsernameResponse.username,
         findUserByUsernameResponse.id,
       );
-      expect(authService.createAccessToken).toHaveBeenCalledWith({
-        username: findUserByUsernameResponse.username,
-        id: findUserByUsernameResponse.id,
-        role: findUserByUsernameResponse.role,
-        status: findUserByUsernameResponse.status,
-      });
+      expect(authService.createAccessToken).toHaveBeenCalledWith(
+        expect.objectContaining({
+          username: findUserByUsernameResponse.username,
+          id: findUserByUsernameResponse.id,
+          role: findUserByUsernameResponse.role,
+          status: findUserByUsernameResponse.status,
+          email: findUserByUsernameResponse.email,
+        }),
+      );
       expect(result).toStrictEqual({
         token: tokens.access,
         refreshToken: tokens.refresh,
@@ -144,12 +149,15 @@ describe('AuthService', () => {
       const result = authService.refresh(user);
 
       expect(result).toStrictEqual({ token });
-      expect(authService.createAccessToken).toHaveBeenCalledWith({
-        username: user.username,
-        id: user.id,
-        role: user.role,
-        status: user.status,
-      });
+      expect(authService.createAccessToken).toHaveBeenCalledWith(
+        expect.objectContaining({
+          username: user.username,
+          id: user.id,
+          role: user.role,
+          status: user.status,
+          email: user.email,
+        }),
+      );
     });
   });
 });
