@@ -36,8 +36,7 @@ export class user1636901042155 implements MigrationInterface {
           },
           {
             name: 'status',
-            type: 'varchar',
-            length: '120',
+            type: 'int2',
             default: USER_STATUS.ACTIVE,
           },
           {
