@@ -43,7 +43,7 @@ export class AuthResolver {
   }
 
   @Mutation(() => TokenPayload)
-  @UseGuards(JwtGuard, RefreshGuard)
+  @UseGuards(RefreshGuard)
   refresh(@CtxUser() ctxUser: User): TokenPayload {
     return this.authService.refresh(ctxUser);
   }
