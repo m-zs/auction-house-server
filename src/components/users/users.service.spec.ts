@@ -83,10 +83,12 @@ describe('UserService', () => {
 
       expect(result).toBe(repositoryResponse);
       expect(hashService.hash).toHaveBeenCalledWith(dto.password);
-      expect(usersRepository.createUser).toHaveBeenCalledWith({
-        ...dto,
-        password,
-      });
+      expect(usersRepository.createUser).toHaveBeenCalledWith(
+        expect.objectContaining({
+          ...dto,
+          password,
+        }),
+      );
     });
   });
 
