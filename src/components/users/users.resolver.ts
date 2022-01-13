@@ -9,7 +9,7 @@ import {
 import { PsqlErrorInterceptor } from 'interceptors/psql-error.interceptor';
 import { PaginationArgs } from 'utils/arguments/pagination.argument';
 import { PaginationPipe } from 'pipes/pagination.pipe';
-import { FindAllResponse } from './responses/find-all.response';
+import { FindAllUsers } from './responses/find-all.response';
 import { JwtGuard } from 'components/auth/guards/jwt.guard';
 import { CtxUser } from 'components/auth/decorators/get-user.decorator';
 import { UsersService } from './users.service';
@@ -21,11 +21,11 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
-  @Query(() => FindAllResponse, { name: 'users' })
+  @Query(() => FindAllUsers, { name: 'users' })
   @UsePipes(new PaginationPipe())
   async findAll(
     @Args() { page, limit }: PaginationArgs,
-  ): Promise<FindAllResponse> {
+  ): Promise<FindAllUsers> {
     return await this.usersService.findAll({ page, limit });
   }
 
