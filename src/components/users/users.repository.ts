@@ -42,7 +42,7 @@ export class UsersRepository extends Repository<User> {
 
     await this.update({ id }, updateUserDto);
 
-    return user;
+    return { ...user, ...updateUserDto };
   }
 
   async removeUser(id: string): Promise<User | void> {
