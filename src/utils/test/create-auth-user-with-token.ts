@@ -3,6 +3,7 @@ import * as faker from 'faker';
 
 import { UsersResolver } from 'components/users/users.resolver';
 import { makeRequest } from './make-request';
+import { User } from 'components/users/entities/user.entity';
 
 const buildCookiesObject = (cookies: string[]) =>
   cookies.reduce((acc, curr) => {
@@ -13,11 +14,13 @@ const buildCookiesObject = (cookies: string[]) =>
     return acc;
   }, {});
 
-export const generateUser = () => ({
-  username: faker.internet.userName(),
-  email: faker.internet.email(),
-  password: faker.internet.password(),
-});
+export const generateUser = () =>
+  ({
+    id: faker.datatype.uuid(),
+    username: faker.internet.userName(),
+    email: faker.internet.email(),
+    password: faker.internet.password(),
+  } as User);
 
 export const createAuthUserWithToken = async (
   usersResolver: UsersResolver,
