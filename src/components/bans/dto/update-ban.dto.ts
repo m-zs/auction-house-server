@@ -4,5 +4,5 @@ import { CreateBanDto } from './create-ban.dto';
 
 @InputType()
 export class UpdateBanDto extends PartialType(
-  OmitType(CreateBanDto, ['issuerId', 'userId']),
+  OmitType(CreateBanDto, ['userId']),
 ) {}

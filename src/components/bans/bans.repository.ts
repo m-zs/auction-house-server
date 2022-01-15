@@ -13,8 +13,11 @@ import { BaseBanResponse } from './responses/base-ban-response';
 
 @EntityRepository(Ban)
 export class BansRepository extends Repository<Ban> {
-  async banUser(createBanDto: CreateBanDto): Promise<BaseBanResponse | void> {
-    const ban = this.create(createBanDto);
+  async banUser(
+    createBanDto: CreateBanDto,
+    issuerId: string,
+  ): Promise<BaseBanResponse | void> {
+    const ban = this.create({ ...createBanDto, issuerId });
 
     return await this.save(ban);
   }

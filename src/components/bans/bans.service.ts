@@ -11,8 +11,11 @@ import { BaseBanResponse } from './responses/base-ban-response';
 export class BansService {
   constructor(private readonly bansRepository: BansRepository) {}
 
-  async create(createBanDto: CreateBanDto): Promise<BaseBanResponse | void> {
-    return this.bansRepository.banUser(createBanDto);
+  async create(
+    createBanDto: CreateBanDto,
+    issuerId: string,
+  ): Promise<BaseBanResponse | void> {
+    return this.bansRepository.banUser(createBanDto, issuerId);
   }
 
   async findAll(options: IPaginationOptions): Promise<Pagination<Ban>> {

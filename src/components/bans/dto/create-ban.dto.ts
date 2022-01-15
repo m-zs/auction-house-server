@@ -25,9 +25,7 @@ export class CreateBanDto {
   @IsUUID()
   userId: string;
 
-  issuerId: string;
-
-  currentDate: Date;
+  currentDate?: Date;
 
   constructor() {
     this.currentDate = new Date();

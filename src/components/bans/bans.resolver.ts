@@ -30,10 +30,7 @@ export class BansResolver {
     @Args('data') createBanDto: CreateBanDto,
     @CtxUser() ctxUser: User,
   ): Promise<BaseBanResponse | void> {
-    return await this.bansService.create({
-      ...createBanDto,
-      issuerId: ctxUser.id,
-    });
+    return await this.bansService.create(createBanDto, ctxUser.id);
   }
 
   @Query(() => FindAllBans, {
