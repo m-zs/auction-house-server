@@ -7,6 +7,7 @@ import { GraphQLError } from 'graphql';
 import dbConfiguration from './config/db.config';
 import { UsersModule } from './components/users/users.module';
 import { AuthModule } from './components/auth/auth.module';
+import { BansModule } from 'components/bans/bans.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { AuthModule } from './components/auth/auth.module';
     }),
     UsersModule,
     AuthModule,
+    BansModule,
   ],
 })
 export class AppModule {}

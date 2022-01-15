@@ -1,9 +1,11 @@
 import { ObjectType, Field } from '@nestjs/graphql';
 import { Exclude } from 'class-transformer';
+import { Ban } from 'components/bans/entities/ban.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -41,4 +43,10 @@ export class User {
   @Exclude({ toPlainOnly: true })
   @Column()
   session?: string;
+
+  @OneToMany(() => Ban, (ban) => ban.receiver)
+  receivedBans: Ban[];
+
+  @OneToMany(() => Ban, (ban) => ban.issuer)
+  issuedBans: Ban[];
 }
