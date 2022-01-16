@@ -31,53 +31,53 @@ describe('UsersResolver', () => {
   });
 
   describe('findAll', () => {
-    it('should return proper response', async () => {
+    it('should return proper value', async () => {
       const serviceResponse = [1, 2, 3];
 
       usersService.findAll.mockResolvedValueOnce(serviceResponse);
 
-      const response = await usersResolver.findAll({ limit: 1, page: 1 });
+      const result = await usersResolver.findAll({ limit: 1, page: 1 });
 
-      expect(response).toBe(serviceResponse);
+      expect(result).toBe(serviceResponse);
     });
   });
 
   describe('findOne', () => {
-    it('should return proper response', async () => {
+    it('should return proper value', async () => {
       const serviceResponse = [1, 2, 3];
       const id = '1';
 
       usersService.findOne.mockResolvedValueOnce(serviceResponse);
 
-      const response = await usersResolver.findOne(id);
+      const result = await usersResolver.findOne(id);
 
-      expect(response).toBe(serviceResponse);
+      expect(result).toBe(serviceResponse);
     });
   });
 
   describe('createUser', () => {
-    it('should return proper response', async () => {
-      const serviceResponse = 'response';
+    it('should return proper value', async () => {
+      const serviceResponse = 'result';
 
       usersService.create.mockResolvedValueOnce(serviceResponse);
 
-      const response = await usersResolver.createUser({
+      const result = await usersResolver.createUser({
         username: 'user',
         password: 'password',
         email: 'email@email.com',
       });
 
-      expect(response).toBe(serviceResponse);
+      expect(result).toBe(serviceResponse);
     });
   });
 
   describe('updateUser', () => {
-    it('should return proper response', async () => {
-      const serviceResponse = 'response';
+    it('should return proper value', async () => {
+      const serviceResponse = 'result';
 
       usersService.update.mockResolvedValueOnce(serviceResponse);
 
-      const response = await usersResolver.updateUser(
+      const result = await usersResolver.updateUser(
         {
           password: 'password',
           email: 'email@email.com',
@@ -85,19 +85,19 @@ describe('UsersResolver', () => {
         {} as User,
       );
 
-      expect(response).toBe(serviceResponse);
+      expect(result).toBe(serviceResponse);
     });
   });
 
   describe('removeUser', () => {
-    it('should return proper response', async () => {
-      const serviceResponse = 'response';
+    it('should return proper value', async () => {
+      const serviceResponse = 'result';
 
       usersService.remove.mockResolvedValueOnce(serviceResponse);
 
-      const response = await usersResolver.removeUser({} as User);
+      const result = await usersResolver.removeUser({} as User);
 
-      expect(response).toBe(serviceResponse);
+      expect(result).toBe(serviceResponse);
     });
   });
 });

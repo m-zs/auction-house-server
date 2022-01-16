@@ -42,7 +42,7 @@ describe('UserService', () => {
 
   describe('findAll', () => {
     it('should return proper value', async () => {
-      const repositoryResponse = 'response';
+      const repositoryResponse = 'result';
 
       usersRepository.findUsers.mockResolvedValueOnce(repositoryResponse);
 
@@ -54,7 +54,7 @@ describe('UserService', () => {
 
   describe('findOne', () => {
     it('should return proper value', async () => {
-      const repositoryResponse = 'response';
+      const repositoryResponse = 'result';
       const id = '1';
 
       usersRepository.findUser.mockResolvedValueOnce(repositoryResponse);
@@ -68,7 +68,7 @@ describe('UserService', () => {
 
   describe('create', () => {
     it('should return proper value', async () => {
-      const repositoryResponse = 'response';
+      const repositoryResponse = 'result';
       const dto = {
         username: faker.internet.userName(),
         email: faker.internet.email(),
@@ -94,7 +94,7 @@ describe('UserService', () => {
 
   describe('update', () => {
     it('should return proper value', async () => {
-      const repositoryResponse = 'response';
+      const repositoryResponse = 'result';
       const id = '1';
       const dto = {
         username: faker.internet.userName(),
@@ -120,7 +120,7 @@ describe('UserService', () => {
   describe('remove', () => {
     it('should return proper value', async () => {
       const id = '1';
-      const repositoryResponse = 'response';
+      const repositoryResponse = 'result';
 
       usersRepository.removeUser.mockResolvedValueOnce(repositoryResponse);
 
