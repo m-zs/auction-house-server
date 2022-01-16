@@ -32,7 +32,7 @@ describe('BansResolver', () => {
   });
 
   describe('createBan', () => {
-    it('should return proper response', async () => {
+    it('should return proper value', async () => {
       const serviceResponse = 'response';
       const data = {
         reason: faker.lorem.words(3),
@@ -51,7 +51,7 @@ describe('BansResolver', () => {
   });
 
   describe('findAll', () => {
-    it('should return proper response', async () => {
+    it('should return proper value', async () => {
       const serviceResponse = 'response';
       const args = { page: 1, limit: 1 };
 
@@ -65,7 +65,7 @@ describe('BansResolver', () => {
   });
 
   describe('findUserBans', () => {
-    it('should return proper response', async () => {
+    it('should return proper value', async () => {
       const serviceResponse = 'response';
       const id = faker.datatype.uuid();
 
@@ -79,7 +79,7 @@ describe('BansResolver', () => {
   });
 
   describe('updateBan', () => {
-    it('should return proper response', async () => {
+    it('should return proper value', async () => {
       const serviceResponse = 'response';
       const id = faker.datatype.uuid();
       const data = {
@@ -97,7 +97,7 @@ describe('BansResolver', () => {
   });
 
   describe('removeBan', () => {
-    it('should return proper response', async () => {
+    it('should return proper value', async () => {
       const serviceResponse = 'response';
       const id = faker.datatype.uuid();
 
