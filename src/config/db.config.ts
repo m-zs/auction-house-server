@@ -5,7 +5,7 @@ export default registerAs('database', () => {
   const configBase = {
     type: 'postgres',
     autoLoadEntities: true,
-    entities: [join(__dirname, '..', '*.entity.{ts,js}')],
+    entities: ['src/**/*.entity.ts'],
     migrations: [join(__dirname, '..', 'migrations/*.{ts,js}')],
     seeds: ['src/seeds/*.{ts,js}'],
     factories: ['src/factories/*.{ts,js}'],
