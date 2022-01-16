@@ -21,8 +21,8 @@
     "test:e2e": "cross-env NODE_ENV=test npm run migration:run-test && jest --runInBand --config ./jest-e2e.json",
     "test:e2e-watch": "cross-env NODE_ENV=test npm run migration:run-test && jest --watch --runInBand --config ./jest-e2e.json",
     "prepare": "husky install",
-    "seed:run": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed",
-    "seed:run-test": "cross-env NODE_ENV=test ts-node ./node_modules/typeorm-seeding/dist/cli.js seed",
+    "seed:run": "ts-node -r tsconfig-paths/register ./node_modules/typeorm-seeding/dist/cli.js seed",
+    "seed:run-test": "cross-env NODE_ENV=test ts-node -r tsconfig-paths/register ./node_modules/typeorm-seeding/dist/cli.js seed",
     "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
     "migration:run": "npm run typeorm migration:run",
     "migration:run-test": "cross-env NODE_ENV=test npm run typeorm migration:run"
@@ -83,7 +83,7 @@
     "ts-jest": "^27.0.3",
     "ts-loader": "^9.2.3",
     "ts-node": "^10.0.0",
-    "tsconfig-paths": "^3.10.1",
+    "tsconfig-paths": "^3.12.0",
     "typescript": "^4.3.5"
   },
   "jest": {
