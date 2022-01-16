@@ -1,6 +1,5 @@
 import { ObjectType, Field } from '@nestjs/graphql';
 import { Exclude } from 'class-transformer';
-import { Ban } from 'components/bans/entities/ban.entity';
 import {
   Column,
   CreateDateColumn,
@@ -8,6 +7,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+
+import { Ban } from 'components/bans/entities/ban.entity';
 
 @ObjectType()
 @Entity()
