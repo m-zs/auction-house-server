@@ -34,6 +34,6 @@ export class BansService {
   }
 
   async remove(id: string): Promise<BaseBanResponse | void> {
-    return this.bansRepository.deleteBan(id);
+    return this.bansRepository.removeBan(id);
   }
 }

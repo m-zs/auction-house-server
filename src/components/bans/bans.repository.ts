@@ -45,7 +45,7 @@ export class BansRepository extends Repository<Ban> {
     };
   }
 
-  async deleteBan(id: string): Promise<BaseBanResponse | void> {
+  async removeBan(id: string): Promise<BaseBanResponse | void> {
     const ban = await this.findBanById(id);
 
     await this.delete({ id });
