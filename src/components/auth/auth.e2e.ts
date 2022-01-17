@@ -170,28 +170,6 @@ describe('Auth - e2e', () => {
       expect(data).toBe(null);
     });
 
-    it('should return an error when no token is provided', async () => {
-      const { cookies } = await createAuthUserWithToken(usersResolver, app);
-
-      const {
-        body: { data, errors },
-      } = await makeRequest({
-        app,
-        query: `
-          mutation {
-            refresh {
-              token
-            }
-          }
-        `,
-        cookies: [`${COOKIE_NAME}=${cookies[COOKIE_NAME]}`],
-      });
-
-      expect(errors[0].statusCode).toBe(401);
-      expect(errors.length).toBe(1);
-      expect(data).toBe(null);
-    });
-
     it('should return token for a valid request', async () => {
       const { cookies, token } = await createAuthUserWithToken(
         usersResolver,
