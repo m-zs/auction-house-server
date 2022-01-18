@@ -3,15 +3,19 @@ import { INestApplication } from '@nestjs/common';
 import * as faker from 'faker';
 
 import { AppModule } from 'app.module';
+import { HashService } from 'utils/hash/hash.service';
+import {
+  clearDB,
+  createAuthUserWithToken,
+  generateUser,
+  makeRequest,
+} from 'utils/test';
 import { UsersRepository } from './users.repository';
 import { UsersResolver } from './users.resolver';
 import { UsersService } from './users.service';
-import { HashService } from 'utils/hash/hash.service';
-import { createAuthUserWithToken, generateUser, makeRequest } from 'utils/test';
 
 describe('Users - e2e', () => {
   let app: INestApplication;
-  let usersRepository: UsersRepository;
   let usersResolver: UsersResolver;
 
   beforeAll(async () => {
@@ -21,18 +25,13 @@ describe('Users - e2e', () => {
     }).compile();
 
     app = module.createNestApplication();
-    usersRepository = module.get<UsersRepository>(UsersRepository);
     usersResolver = module.get<UsersResolver>(UsersResolver);
 
     await app.init();
   });
 
   afterAll(async () => {
-    await usersRepository
-      .createQueryBuilder()
-      .delete()
-      .where('1 = 1')
-      .execute();
+    await clearDB();
 
     await app.close();
   });
@@ -61,9 +60,7 @@ describe('Users - e2e', () => {
     it('should return users array', async () => {
       const users = Array.from(Array(5), () => generateUser());
 
-      await Promise.all(
-        users.map((_, i) => usersResolver.createUser(users[i])),
-      );
+      await Promise.all(users.map((user) => usersResolver.createUser(user)));
 
       const {
         body: { data },
@@ -172,7 +169,10 @@ describe('Users - e2e', () => {
     });
 
     it('should update existing user', async () => {
-      const { token, id } = await createAuthUserWithToken(usersResolver, app);
+      const {
+        token,
+        user: { id },
+      } = await createAuthUserWithToken(usersResolver, app);
 
       const {
         body: {
@@ -221,7 +221,10 @@ describe('Users - e2e', () => {
   });
 
   it('should remove existing user', async () => {
-    const { token, id } = await createAuthUserWithToken(usersResolver, app);
+    const {
+      token,
+      user: { id },
+    } = await createAuthUserWithToken(usersResolver, app);
 
     const {
       body: {

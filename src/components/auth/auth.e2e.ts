@@ -6,7 +6,12 @@ import { ConfigService } from '@nestjs/config';
 import * as cookieParser from 'cookie-parser';
 
 import { AppModule } from 'app.module';
-import { createAuthUserWithToken, generateUser, makeRequest } from 'utils/test';
+import {
+  clearDB,
+  createAuthUserWithToken,
+  generateUser,
+  makeRequest,
+} from 'utils/test';
 import { HashService } from 'utils/hash/hash.service';
 import { UsersRepository } from 'components/users/users.repository';
 import { UsersResolver } from 'components/users/users.resolver';
@@ -17,7 +22,6 @@ import { COOKIE_NAME } from './auth.const';
 
 describe('Auth - e2e', () => {
   let app: INestApplication;
-  let usersRepository: UsersRepository;
   let usersResolver: UsersResolver;
 
   beforeAll(async () => {
@@ -39,7 +43,6 @@ describe('Auth - e2e', () => {
     }).compile();
 
     app = module.createNestApplication();
-    usersRepository = module.get<UsersRepository>(UsersRepository);
     usersResolver = module.get<UsersResolver>(UsersResolver);
 
     app.use(cookieParser());
@@ -47,11 +50,7 @@ describe('Auth - e2e', () => {
   });
 
   afterAll(async () => {
-    await usersRepository
-      .createQueryBuilder()
-      .delete()
-      .where('1 = 1')
-      .execute();
+    await clearDB();
 
     await app.close();
   });
