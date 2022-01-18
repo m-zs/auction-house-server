@@ -1,5 +1,6 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { IsEmail, MaxLength, MinLength } from 'class-validator';
+import { USER_ROLE } from '../user.types';
 
 @InputType()
 export class CreateUserDto {
@@ -16,4 +17,6 @@ export class CreateUserDto {
   @MinLength(4)
   @MaxLength(60)
   password: string;
+
+  role?: USER_ROLE;
 }
