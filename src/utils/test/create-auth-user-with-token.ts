@@ -29,17 +29,26 @@ export interface AuthUserWithToken {
   cookies: Record<string, string>;
 }
 
+export const createDbUser = async (
+  usersResolver: UsersResolver,
+  userData?: Partial<User>,
+): Promise<User> => {
+  const user = generateUser(userData);
+  const newUser = await usersResolver.createUser(user);
+
+  if (!newUser) {
+    throw new Error('Error when creating user!');
+  }
+
+  return { ...newUser, ...user };
+};
+
 export const createAuthUserWithToken = async (
   usersResolver: UsersResolver,
   app: INestApplication,
   userData?: Partial<User>,
 ): Promise<AuthUserWithToken> => {
-  const user = generateUser(userData);
-  const newUser = await usersResolver.createUser(user);
-
-  if (!newUser) {
-    throw new Error('Auth user missing');
-  }
+  const user = await createDbUser(usersResolver, userData);
 
   const {
     body: {
@@ -64,7 +73,7 @@ export const createAuthUserWithToken = async (
 
   return {
     token,
-    user: { ...newUser, ...user },
+    user,
     cookies: buildCookiesObject(headers['set-cookie']),
   };
 };
