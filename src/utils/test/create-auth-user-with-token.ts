@@ -4,6 +4,7 @@ import * as faker from 'faker';
 import { UsersResolver } from 'components/users/users.resolver';
 import { makeRequest } from './make-request';
 import { User } from 'components/users/entities/user.entity';
+import { USER_ROLE } from 'components/users/user.types';
 
 const buildCookiesObject = (cookies: string[]) =>
   cookies.reduce((acc, curr) => {
@@ -14,19 +15,26 @@ const buildCookiesObject = (cookies: string[]) =>
     return acc;
   }, {});
 
-export const generateUser = () =>
+export const generateUser = (user?: Partial<User>): User =>
   ({
-    id: faker.datatype.uuid(),
-    username: faker.internet.userName(),
-    email: faker.internet.email(),
-    password: faker.internet.password(),
+    username: user?.username || faker.internet.userName(),
+    email: user?.email || faker.internet.email(),
+    password: user?.password || faker.internet.password(),
+    role: user?.role || USER_ROLE.USER,
   } as User);
+
+export interface AuthUserWithToken {
+  token: string;
+  user: Partial<User>;
+  cookies: Record<string, string>;
+}
 
 export const createAuthUserWithToken = async (
   usersResolver: UsersResolver,
   app: INestApplication,
-) => {
-  const user = generateUser();
+  userData?: Partial<User>,
+): Promise<AuthUserWithToken> => {
+  const user = generateUser(userData);
   const newUser = await usersResolver.createUser(user);
 
   if (!newUser) {
@@ -56,8 +64,7 @@ export const createAuthUserWithToken = async (
 
   return {
     token,
-    id: newUser.id,
-    username: user.username,
+    user: { ...newUser, ...user },
     cookies: buildCookiesObject(headers['set-cookie']),
   };
 };
