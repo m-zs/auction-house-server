@@ -1,5 +1,9 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
 
+import { JwtGuard } from 'components/auth/guards/jwt.guard';
+import { RoleGuard } from 'guards/user-role.guard';
+import { USER_ROLE } from 'components/users/user.types';
 import { CategoriesService } from './categories.service';
 import { Category } from './entities/category.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -12,6 +16,8 @@ export class CategoriesResolver {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @Mutation(() => BaseCategoryResponse, { nullable: true })
+  @UseGuards(RoleGuard(USER_ROLE.ADMIN))
+  @UseGuards(JwtGuard)
   async createCategory(
     @Args('data') data: CreateCategoryDto,
   ): Promise<BaseCategoryResponse | void> {
@@ -38,6 +44,8 @@ export class CategoriesResolver {
   }
 
   @Mutation(() => BaseCategoryResponse)
+  @UseGuards(RoleGuard(USER_ROLE.ADMIN))
+  @UseGuards(JwtGuard)
   async updateCategory(
     @Args('data') data: UpdateCategoryDto,
     @Args('id') id: string,
@@ -46,6 +54,8 @@ export class CategoriesResolver {
   }
 
   @Mutation(() => BaseCategoryResponse)
+  @UseGuards(RoleGuard(USER_ROLE.ADMIN))
+  @UseGuards(JwtGuard)
   async removeCategory(
     @Args('id') id: string,
   ): Promise<BaseCategoryResponse | void> {
