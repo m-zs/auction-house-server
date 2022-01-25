@@ -5,24 +5,10 @@ export class category1642941495340 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `
-        CREATE TABLE "category" (
-          "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
-          "name" character varying NOT NULL,
-          "canPopulate" boolean NOT NULL DEFAULT false,
-          "parentId" uuid, CONSTRAINT "UQ_23c05c292c439d77b0de816b500" UNIQUE ("name"),
-          CONSTRAINT "PK_9c4e4a89e3674fc9f382d733f03" PRIMARY KEY ("id")
-        )
-      `,
+      `CREATE TABLE "category" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying NOT NULL, "canPopulate" boolean NOT NULL DEFAULT false, "parentId" uuid, CONSTRAINT "PK_9c4e4a89e3674fc9f382d733f03" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
-      `
-        CREATE TABLE "category_closure" (
-          "id_ancestor" uuid NOT NULL,
-          "id_descendant" uuid NOT NULL,
-          CONSTRAINT "PK_8da8666fc72217687e9b4f4c7e9" PRIMARY KEY ("id_ancestor", "id_descendant")
-        )
-      `,
+      `CREATE TABLE "category_closure" ("id_ancestor" uuid NOT NULL, "id_descendant" uuid NOT NULL, CONSTRAINT "PK_8da8666fc72217687e9b4f4c7e9" PRIMARY KEY ("id_ancestor", "id_descendant"))`,
     );
     await queryRunner.query(
       `CREATE INDEX "IDX_4aa1348fc4b7da9bef0fae8ff4" ON "category_closure" ("id_ancestor") `,

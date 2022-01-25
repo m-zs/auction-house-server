@@ -17,7 +17,7 @@ export class Category {
   id: string;
 
   @Field()
-  @Column({ unique: true })
+  @Column()
   name: string;
 
   @Field(() => [Category], { nullable: true })
