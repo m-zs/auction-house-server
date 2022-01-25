@@ -36,7 +36,7 @@ export class BansRepository extends Repository<Ban> {
   ): Promise<BaseBanResponse | void> {
     const ban = await this.findBanById(id);
 
-    await this.update({ id }, { ...updateBanDto });
+    await this.update({ id }, updateBanDto);
 
     return {
       ...ban,
