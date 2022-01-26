@@ -18,7 +18,7 @@ export class CreateCategoryDto {
   @Field()
   @IsBoolean()
   @IsOptional()
-  canPopulate?: boolean = true;
+  canPopulate?: boolean = false;
 
   @Field({ nullable: true })
   @IsUUID()
