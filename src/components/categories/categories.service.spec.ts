@@ -21,6 +21,7 @@ describe('CategoriesService', () => {
             findCategories: jest.fn(),
             updateCategory: jest.fn(),
             removeCategory: jest.fn(),
+            findCategoryTree: jest.fn(),
           })),
         },
       ],
@@ -114,6 +115,22 @@ describe('CategoriesService', () => {
 
       expect(result).toBe(repositoryResponse);
       expect(categoriesRepository.removeCategory).toHaveBeenCalledWith(id);
+    });
+  });
+
+  describe('findCategoryTree', () => {
+    it('should return proper value', async () => {
+      const serviceResponse = 'response';
+      const args = { id: faker.datatype.uuid() };
+
+      categoriesRepository.findCategoryTree.mockResolvedValueOnce(
+        serviceResponse,
+      );
+
+      const result = await categoriesService.findCategoryTree(args);
+
+      expect(result).toBe(serviceResponse);
+      expect(categoriesRepository.findCategoryTree).toHaveBeenCalledWith(args);
     });
   });
 });
