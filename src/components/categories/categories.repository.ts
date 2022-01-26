@@ -54,7 +54,7 @@ export class CategoriesRepository extends Repository<Category> {
   ): Promise<BaseCategoryResponse | void> {
     const category = await this.findOne({ id });
 
-    await this.update({ id }, updateCategoryDto);
+    await this.update({ id }, { ...updateCategoryDto });
 
     return { ...category, ...updateCategoryDto };
   }
