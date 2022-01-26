@@ -47,7 +47,7 @@ export class CategoriesResolver {
     return await this.categoriesService.findOne(options);
   }
 
-  @Mutation(() => BaseCategoryResponse)
+  @Mutation(() => BaseCategoryResponse, { nullable: true })
   @UseGuards(RoleGuard(USER_ROLE.ADMIN))
   @UseGuards(JwtGuard)
   async updateCategory(
@@ -57,7 +57,7 @@ export class CategoriesResolver {
     return await this.categoriesService.update(id, data);
   }
 
-  @Mutation(() => BaseCategoryResponse)
+  @Mutation(() => BaseCategoryResponse, { nullable: true })
   @UseGuards(RoleGuard(USER_ROLE.ADMIN))
   @UseGuards(JwtGuard)
   async removeCategory(
