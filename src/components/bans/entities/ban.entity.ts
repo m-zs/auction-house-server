@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { User } from 'components/users/entities/user.entity';
+import { User } from '../../users/entities/user.entity';
 
 @ObjectType()
 @Entity()
@@ -18,7 +18,7 @@ export class Ban {
   id: string;
 
   @Field({ description: 'Ban reason', nullable: true })
-  @Column()
+  @Column({ nullable: true })
   reason?: string;
 
   @Field({ description: 'Ban start time' })
@@ -26,7 +26,7 @@ export class Ban {
   issuedAt: Date;
 
   @Field({ description: 'Ban end time', nullable: true })
-  @CreateDateColumn({ type: 'timestamp' })
+  @CreateDateColumn({ type: 'timestamp', nullable: true })
   endsAt?: Date;
 
   @Column()
