@@ -8,6 +8,7 @@ import dbConfiguration from './config/db.config';
 import { UsersModule } from './components/users/users.module';
 import { AuthModule } from './components/auth/auth.module';
 import { BansModule } from 'components/bans/bans.module';
+import { CategoriesModule } from 'components/categories/categories.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { BansModule } from 'components/bans/bans.module';
     UsersModule,
     AuthModule,
     BansModule,
+    CategoriesModule,
   ],
 })
 export class AppModule {}

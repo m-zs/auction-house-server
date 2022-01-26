@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { Ban } from 'components/bans/entities/ban.entity';
+import { Ban } from '../../bans/entities/ban.entity';
 
 @ObjectType()
 @Entity()
@@ -42,7 +42,7 @@ export class User {
   createdAt: Date;
 
   @Exclude({ toPlainOnly: true })
-  @Column()
+  @Column({ nullable: true })
   session?: string;
 
   @OneToMany(() => Ban, (ban) => ban.receiver)

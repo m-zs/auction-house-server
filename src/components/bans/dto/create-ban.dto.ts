@@ -2,6 +2,7 @@ import { InputType, Field } from '@nestjs/graphql';
 import {
   IsDateString,
   IsNotEmpty,
+  IsOptional,
   IsString,
   IsUUID,
   Validate,
@@ -11,8 +12,9 @@ import { IsAfterDate } from 'utils/validators';
 
 @InputType()
 export class CreateBanDto {
-  @Field({ description: 'Ban reason' })
+  @Field({ description: 'Ban reason', nullable: true })
   @IsString()
+  @IsOptional()
   reason?: string;
 
   @Field({ description: 'Ban end date' })
