@@ -8,7 +8,7 @@ import { CategoriesService } from './categories.service';
 import { Category } from './entities/category.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { FindCategoriesSearchOptionsDto } from './dto/find-all-search-options.dto';
+import { FindCategoryOptionsDto } from './dto/find-all-search-options.dto';
 import { BaseCategoryResponse } from './responses/base-category.response';
 
 @Resolver(() => Category)
@@ -29,16 +29,20 @@ export class CategoriesResolver {
     nullable: true,
     name: 'categories',
   })
-  async findAll(
-    @Args('options', { nullable: true })
-    options?: FindCategoriesSearchOptionsDto,
-  ): Promise<Category[] | void> {
-    return await this.categoriesService.findAll(options);
+  async findAll(): Promise<Category[] | void> {
+    return await this.categoriesService.findAll();
+  }
+
+  @Query(() => Category, { name: 'categoryTree', nullable: true })
+  async findCategoryTree(
+    @Args('options') options: FindCategoryOptionsDto,
+  ): Promise<Category | void> {
+    return await this.categoriesService.findCategoryTree(options);
   }
 
   @Query(() => BaseCategoryResponse, { name: 'category', nullable: true })
   async findOne(
-    @Args('options') options: FindCategoriesSearchOptionsDto,
+    @Args('options') options: FindCategoryOptionsDto,
   ): Promise<BaseCategoryResponse | void> {
     return await this.categoriesService.findOne(options);
   }

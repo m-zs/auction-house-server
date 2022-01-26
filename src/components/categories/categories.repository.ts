@@ -2,10 +2,7 @@ import { NotFoundException } from '@nestjs/common';
 import { EntityRepository, getManager, Repository } from 'typeorm';
 
 import { CreateCategoryDto } from './dto/create-category.dto';
-import {
-  FindCategoriesSearchOptionsDto,
-  FindCategoryOptionsDto,
-} from './dto/find-all-search-options.dto';
+import { FindCategoryOptionsDto } from './dto/find-all-search-options.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
 import { BaseCategoryResponse } from './responses/base-category.response';
@@ -22,20 +19,17 @@ export class CategoriesRepository extends Repository<Category> {
     });
   }
 
-  async findCategories(
-    options: FindCategoriesSearchOptionsDto,
-  ): Promise<Category[] | void> {
-    if (options?.id || options?.name) {
-      return await getManager()
-        .getTreeRepository(Category)
-        .createDescendantsQueryBuilder(
-          'category',
-          'categoryClosure',
-          (await this.findCategoryByOptions(options)) as Category,
-        )
-        .getMany();
-    }
+  async findCategoryTree(
+    options: FindCategoryOptionsDto,
+  ): Promise<Category | void> {
+    const category = await this.findCategoryByOptions(options);
 
+    return await getManager()
+      .getTreeRepository(Category)
+      .findDescendantsTree(category as Category);
+  }
+
+  async findCategories(): Promise<Category[] | void> {
     return await getManager().getTreeRepository(Category).findTrees();
   }
 

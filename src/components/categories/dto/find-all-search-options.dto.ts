@@ -1,4 +1,4 @@
-import { Field, InputType, PartialType } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
 import { IsString, IsUUID, ValidateIf } from 'class-validator';
 
 @InputType()
@@ -13,8 +13,3 @@ export class FindCategoryOptionsDto {
   @ValidateIf((values) => !values.name)
   id?: string;
 }
-
-@InputType()
-export class FindCategoriesSearchOptionsDto extends PartialType(
-  FindCategoryOptionsDto,
-) {}

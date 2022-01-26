@@ -67,16 +67,15 @@ describe('CategoriesService', () => {
   describe('findAll', () => {
     it('should return proper value', async () => {
       const repositoryResponse = 'response';
-      const args = { name: faker.random.word() };
 
       categoriesRepository.findCategories.mockResolvedValueOnce(
         repositoryResponse,
       );
 
-      const result = await categoriesService.findAll(args);
+      const result = await categoriesService.findAll();
 
       expect(result).toBe(repositoryResponse);
-      expect(categoriesRepository.findCategories).toHaveBeenCalledWith(args);
+      expect(categoriesRepository.findCategories).toHaveBeenCalled();
     });
   });
 

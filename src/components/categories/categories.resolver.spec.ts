@@ -49,14 +49,13 @@ describe('CategoriesResolver', () => {
   describe('findAll', () => {
     it('should return proper value', async () => {
       const serviceResponse = 'response';
-      const args = { name: faker.random.word() };
 
       categoriesService.findAll.mockResolvedValueOnce(serviceResponse);
 
-      const result = await categoriesResolver.findAll(args);
+      const result = await categoriesResolver.findAll();
 
       expect(result).toBe(serviceResponse);
-      expect(categoriesService.findAll).toHaveBeenCalledWith(args);
+      expect(categoriesService.findAll).toHaveBeenCalled();
     });
   });
 
